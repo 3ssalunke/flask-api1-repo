@@ -15,11 +15,6 @@ app.secret_key = 'qwertyuioplkjhgfdsazxcvbnm'
 api = Api(app)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-
 jwt = JWT(app, authenticate, identity)
 
 
@@ -32,5 +27,9 @@ api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__':
     from db import db
+
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
     db.init_app(app)
     app.run(port=5000, debug=True)
